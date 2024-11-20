@@ -1,1 +1,2 @@
 # ProjektDziennik
+Już wkrótce
