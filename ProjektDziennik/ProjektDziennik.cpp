@@ -42,6 +42,20 @@ struct Uczen
 
 		return (float)suma / (float)ileOcen;
 	}
+
+	// jeśli operacja przejdzie pomyślnie to zwraca true
+	bool DodajOcene(int nowaOcena, int nrPrzedmiotu)
+	{
+		for (int i = 0; i < maxOcenNaPrzedmiot; i++)
+		{
+			if (oceny[nrPrzedmiotu][i] == 0)
+			{
+				oceny[nrPrzedmiotu][i] = nowaOcena;
+				return true;
+			}
+		}
+		return false;
+	}
 };
 
 Uczen uczniowie[maxUczniow]; // tablica na 10-ciu uczniów
@@ -153,7 +167,7 @@ void GenerujListeZagrozonychUczniow()
 				double sredniaUcznia = uczniowie[i].SredniaOcen(j);
 				if (sredniaUcznia <= 2 && sredniaUcznia > 0)
 				{
-					cout << i+1 << ". " << uczniowie[i].imie << " " << uczniowie[i].nazwisko << " ponieważ Przedmiot nr." << j + 1 << " ma średnią " << sredniaUcznia << endl;
+					cout << i + 1 << ". " << uczniowie[i].imie << " " << uczniowie[i].nazwisko << " ponieważ Przedmiot nr." << j + 1 << " ma średnią " << sredniaUcznia << endl;
 					break;
 				}
 			}
@@ -229,7 +243,35 @@ void UsunUcznia()
 		return;
 	}
 
-	UsunUcznia(nrUcznia-1);
+	UsunUcznia(nrUcznia - 1);
+}
+
+void DodajOcene()
+{
+	int numerUcznia = 0;
+	cout << "Wybierz numer ucznia" << endl;
+	cin >> numerUcznia;
+	if (numerUcznia > 0 && numerUcznia - 1 < maxUczniow)
+	{
+		int numerPrzedmiotu = 0;
+		cout << "Wybierz numer przedmiotu" << endl;
+		cin >> numerPrzedmiotu;
+		if (numerPrzedmiotu > 0 && numerPrzedmiotu - 1 < maxUczniow)
+		{
+			int nowaOcena = 0;
+			cout << "Wprowadź nową ocenę:" << endl;
+			cin >> nowaOcena;
+			if (uczniowie[numerUcznia - 1].DodajOcene(nowaOcena, numerPrzedmiotu - 1))
+			{
+				cout << "Dodano ocenę." << endl;
+			}
+			else
+			{
+				cout << "Nie można dodać oceny ponieważ lista ocen jest przepełniona." << endl;
+			}
+		}
+	}
+	cout << endl;
 }
 
 void Menu()
@@ -242,6 +284,7 @@ menuLabel:
 	cout << "2.Generuj liste zagrożonych uczniow\n";
 	cout << "3.Dodaj uczniow\n";
 	cout << "4.Usun ucznia\n";
+	cout << "5.Dodaj ocenę\n";
 	cout << "0.Wyjdź\n";
 	cout << "-------------------------\n";
 	int wybor = -1;
@@ -265,6 +308,10 @@ menuLabel:
 
 	case 4:
 		UsunUcznia();
+		break;
+
+	case 5:
+		DodajOcene();
 		break;
 
 	case 0:
